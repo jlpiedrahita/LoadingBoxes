@@ -35,8 +35,8 @@ class LoadingBoxesView: UIView {
             sceneLayer.transform = CATransform3DScale(sceneLayer.transform, boxSize, boxSize, boxSize)
             
             // orthogonal projection
-            sceneLayer.sublayerTransform = CATransform3DRotate(sceneLayer.sublayerTransform, CGFloat(M_PI_4), 1, 0, 0)
-            sceneLayer.sublayerTransform = CATransform3DRotate(sceneLayer.sublayerTransform, CGFloat(M_PI_4), 0, 0, 1)
+            sceneLayer.transform = CATransform3DRotate(sceneLayer.transform, CGFloat(M_PI_4), 1, 0, 0)
+            sceneLayer.transform = CATransform3DRotate(sceneLayer.transform, CGFloat(M_PI_4), 0, 0, 1)
             
             return sceneLayer
     }
