@@ -75,11 +75,9 @@
 		8294BBC21C2DB8FF00292BBB /* LoadingBoxes */ = {
 			isa = PBXGroup;
 			children = (
-				8294BBC31C2DB90000292BBB /* AppDelegate.swift */,
+				8294BBE31C2DBFEA00292BBB /* Resources */,
 				8294BBC71C2DB90000292BBB /* Main.storyboard */,
 				8294BBCA1C2DB90000292BBB /* Assets.xcassets */,
-				8294BBCC1C2DB90000292BBB /* LaunchScreen.storyboard */,
-				8294BBCF1C2DB90000292BBB /* Info.plist */,
 			);
 			path = LoadingBoxes;
 			sourceTree = "<group>";
@@ -91,6 +89,16 @@
 				8294BBDA1C2DB90000292BBB /* Info.plist */,
 			);
 			path = LoadingBoxesTests;
+			sourceTree = "<group>";
+		};
+		8294BBE31C2DBFEA00292BBB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8294BBC31C2DB90000292BBB /* AppDelegate.swift */,
+				8294BBCF1C2DB90000292BBB /* Info.plist */,
+				8294BBCC1C2DB90000292BBB /* LaunchScreen.storyboard */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
