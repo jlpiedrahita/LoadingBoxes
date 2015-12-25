@@ -21,6 +21,7 @@ class LoadingBoxesView: UIView {
         animationSpeed: CFTimeInterval = 2.5) -> CALayer {
             
             let sceneLayer = CATransformLayer()
+            sceneLayer.bounds = CGRectMake(0, 0, 0, 1)
             
             // 4 boxes
             let numberOfBoxes = 4
@@ -31,7 +32,7 @@ class LoadingBoxesView: UIView {
                 sceneLayer.addSublayer(box)
             }
             
-            sceneLayer.transform = CATransform3DTranslate(sceneLayer.transform, (self.bounds.size.width / 2) - 20, 0, 0)
+            sceneLayer.transform = CATransform3DTranslate(sceneLayer.transform, CGRectGetMidX(self.bounds), 0, 0)
             sceneLayer.transform = CATransform3DScale(sceneLayer.transform, boxSize, boxSize, boxSize)
             
             // orthogonal projection
