@@ -18,7 +18,7 @@ class LoadingBoxesView: UIView {
     private func sceneLayer(
         boxSize: CGFloat = 40,
         boxColor: UIColor = UIColor(hue: 49/360, saturation: 0.78, brightness: 1, alpha: 1),
-        animationSpeed: CFTimeInterval = 3) -> CALayer {
+        animationSpeed: CFTimeInterval = 2.5) -> CALayer {
             
             let sceneLayer = CATransformLayer()
             
