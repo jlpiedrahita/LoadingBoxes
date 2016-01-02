@@ -10,12 +10,14 @@ import UIKit
 
 class LoadingBoxesView: UIView {
     
-    private let boxAnimationKey = "boxAnimationKey"
+    @IBInspectable var boxSize: CGFloat = 40
+    @IBInspectable var boxColor: UIColor = UIColor(hue: 49/360, saturation: 0.78, brightness: 1, alpha: 1)
+    @IBInspectable var animationSpeed: Double = 2.5
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.layer.addSublayer(sceneLayer())
+    private let boxAnimationKey = "boxAnimationKey"
         
+    override func awakeFromNib() {
+        self.layer.addSublayer(sceneLayer())
         // all animations are removed after the app goes to the background, reestablish animations once the app become active
         // Note: no need to manually call removeObserver: https://developer.apple.com/library/mac/releasenotes/Foundation/RN-Foundation/index.html#10_11NotificationCenter
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reestablishAnimationsIfNeeded", name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -26,36 +28,32 @@ class LoadingBoxesView: UIView {
         
         if let boxes = sceneLayer.sublayers where boxes.first?.animationForKey(boxAnimationKey) == nil {
             for (boxIndex, box) in boxes.enumerate() {
-                box.addAnimation(boxAnimation(duration: 2.5, timeOffset: 2.5 / Double(boxes.count) * Double(boxIndex)), forKey: boxAnimationKey)
+                box.addAnimation(boxAnimation(duration: animationSpeed, timeOffset: animationSpeed / Double(boxes.count) * Double(boxIndex)), forKey: boxAnimationKey)
             }
         }
     }
     
-    private func sceneLayer(
-        boxSize: CGFloat = 40,
-        boxColor: UIColor = UIColor(hue: 49/360, saturation: 0.78, brightness: 1, alpha: 1),
-        animationSpeed: CFTimeInterval = 2.5) -> CALayer {
-            
-            let sceneLayer = CATransformLayer()
-            sceneLayer.bounds = CGRectMake(0, 0, 0, 1)
-            
-            // 4 boxes
-            let numberOfBoxes = 4
-            
-            for boxIndex in 0 ..< numberOfBoxes {
-                let box = boxLayer(color:boxColor)
-                box.addAnimation(boxAnimation(duration: animationSpeed, timeOffset: animationSpeed / Double(numberOfBoxes) * Double(boxIndex)), forKey: boxAnimationKey)
-                sceneLayer.addSublayer(box)
-            }
-            
-            sceneLayer.transform = CATransform3DTranslate(sceneLayer.transform, CGRectGetMidX(self.bounds), 0, 0)
-            sceneLayer.transform = CATransform3DScale(sceneLayer.transform, boxSize, boxSize, boxSize)
-            
-            // orthogonal projection
-            sceneLayer.transform = CATransform3DRotate(sceneLayer.transform, CGFloat(M_PI_4), 1, 0, 0)
-            sceneLayer.transform = CATransform3DRotate(sceneLayer.transform, CGFloat(M_PI_4), 0, 0, 1)
-            
-            return sceneLayer
+    private func sceneLayer() -> CALayer {     
+        let sceneLayer = CATransformLayer()
+        sceneLayer.bounds = CGRectMake(0, 0, 0, 1)
+        
+        // 4 boxes
+        let numberOfBoxes = 4
+        
+        for boxIndex in 0 ..< numberOfBoxes {
+            let box = boxLayer(color:boxColor)
+            box.addAnimation(boxAnimation(duration: animationSpeed, timeOffset: animationSpeed / Double(numberOfBoxes) * Double(boxIndex)), forKey: boxAnimationKey)
+            sceneLayer.addSublayer(box)
+        }
+        
+        sceneLayer.transform = CATransform3DTranslate(sceneLayer.transform, CGRectGetMidX(self.bounds), 0, 0)
+        sceneLayer.transform = CATransform3DScale(sceneLayer.transform, boxSize, boxSize, boxSize)
+        
+        // orthogonal projection
+        sceneLayer.transform = CATransform3DRotate(sceneLayer.transform, CGFloat(M_PI_4), 1, 0, 0)
+        sceneLayer.transform = CATransform3DRotate(sceneLayer.transform, CGFloat(M_PI_4), 0, 0, 1)
+        
+        return sceneLayer
     }
     
     private func boxAnimation(duration duration: CFTimeInterval, timeOffset: CFTimeInterval) -> CAAnimation {
