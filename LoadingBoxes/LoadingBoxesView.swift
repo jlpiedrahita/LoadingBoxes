@@ -10,9 +10,25 @@ import UIKit
 
 class LoadingBoxesView: UIView {
     
+    private let boxAnimationKey = "boxAnimationKey"
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.addSublayer(sceneLayer())
+        
+        // all animations are removed after the app goes to the background, reestablish animations once the app become active
+        // Note: no need to manually call removeObserver: https://developer.apple.com/library/mac/releasenotes/Foundation/RN-Foundation/index.html#10_11NotificationCenter
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reestablishAnimationsIfNeeded", name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+    
+    func reestablishAnimationsIfNeeded() {
+        guard let sceneLayer = self.layer.sublayers?.first else { return }
+        
+        if let boxes = sceneLayer.sublayers where boxes.first?.animationForKey(boxAnimationKey) == nil {
+            for (boxIndex, box) in boxes.enumerate() {
+                box.addAnimation(boxAnimation(duration: 2.5, timeOffset: 2.5 / Double(boxes.count) * Double(boxIndex)), forKey: boxAnimationKey)
+            }
+        }
     }
     
     private func sceneLayer(
@@ -28,7 +44,7 @@ class LoadingBoxesView: UIView {
             
             for boxIndex in 0 ..< numberOfBoxes {
                 let box = boxLayer(color:boxColor)
-                box.addAnimation(boxAnimation(duration: animationSpeed, timeOffset: animationSpeed / Double(numberOfBoxes) * Double(boxIndex)), forKey: nil)
+                box.addAnimation(boxAnimation(duration: animationSpeed, timeOffset: animationSpeed / Double(numberOfBoxes) * Double(boxIndex)), forKey: boxAnimationKey)
                 sceneLayer.addSublayer(box)
             }
             
