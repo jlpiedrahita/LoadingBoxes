@@ -24,13 +24,15 @@ class LoadingBoxesView: UIView {
     }
     
     func reestablishAnimationsIfNeeded() {
+        
         guard let sceneLayer = self.layer.sublayers?.first else { return }
         
-        if let boxes = sceneLayer.sublayers where boxes.first?.animationForKey(boxAnimationKey) == nil {
-            for (boxIndex, box) in boxes.enumerate() {
-                box.addAnimation(boxAnimation(duration: animationSpeed, timeOffset: animationSpeed / Double(boxes.count) * Double(boxIndex)), forKey: boxAnimationKey)
-            }
+        guard let boxes = sceneLayer.sublayers where boxes.first?.animationForKey(boxAnimationKey) == nil else { return }
+        
+        for (boxIndex, box) in boxes.enumerate() {
+            box.addAnimation(boxAnimation(duration: animationSpeed, timeOffset: animationSpeed / Double(boxes.count) * Double(boxIndex)), forKey: boxAnimationKey)
         }
+        
     }
     
     private func sceneLayer() -> CALayer {     
